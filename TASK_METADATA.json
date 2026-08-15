@@ -1,0 +1,12 @@
+{
+  "schema_version": 2,
+  "source": "self_built",
+  "workflow": "codex_gold_fix",
+  "bug_category": "slice",
+  "reproducibility": "stable",
+  "difficulty": "advanced",
+  "target_bug_count": 1,
+  "symptom_type": "wrong_result",
+  "reproduction_command": "go test -run TestReplayRecoversEveryPersistedEvent -count=1 ./internal/reconcile/",
+  "upstream_issue": null
+}
