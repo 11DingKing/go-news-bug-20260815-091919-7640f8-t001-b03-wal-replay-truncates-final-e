@@ -33,17 +33,17 @@ func Replay(st store.Store, data []byte) (int, error) {
 	return n, nil
 }
 
-// parseWAL splits newline-delimited WAL records into events. Each record is
-// terminated by a newline, so bytes.Split always leaves one final empty
-// segment after the trailing terminator; that empty segment is dropped before
-// the remaining records are decoded.
+// parseWAL splits newline-delimited WAL records into events. A trailing newline
+// produces one final empty segment, which is ignored before the records are
+// decoded.
 func parseWAL(data []byte) ([]model.Event, error) {
 	if len(data) == 0 {
 		return nil, nil
 	}
 	lines := bytes.Split(data, []byte("\n"))
-	// Drop the trailing empty segment produced by the final newline.
-	lines = lines[:len(lines)-1]
+	if len(lines[len(lines)-1]) == 0 {
+		lines = lines[:len(lines)-1]
+	}
 	events := make([]model.Event, 0, len(lines))
 	for _, raw := range lines {
 		line := bytes.TrimSpace(raw)
